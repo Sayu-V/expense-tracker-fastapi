@@ -1,0 +1,41 @@
+# Python
+
+**pycache**/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+
+venv/
+.env/
+.env.*
+
+# Python packaging
+
+build/
+dist/
+*.egg-info/
+
+# Logs
+
+*.log
+
+# OS files
+
+.DS_Store
+Thumbs.db
+
+# IDE files
+
+.vscode/
+.idea/
+
+# Docker
+
+*.pid
+docker-compose.override.yml
+
+# Database
+
+*.db
