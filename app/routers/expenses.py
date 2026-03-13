@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import APIRouter, HTTPException
 from app.schemas.expense_schema import Expense
 from app.storage.memory_db import expenses, categories, next_expense_id
@@ -89,9 +90,22 @@ def filter_amount(min: float, max: float):
 
 
 @router.get("/search")
-def search_expenses(q: str):
-    return [
-        e for e in expenses
-        if q.lower() in e.get("note", "").lower()
-        or q.lower() in e.get("category", "").lower()
-    ]
+def search_expenses(
+    category: Optional[str] = None,
+    note: Optional[str] = None
+):
+    results = expenses
+
+    if category:
+        results = [
+            e for e in results
+            if e["category"].lower() == category.lower()
+        ]
+
+    if note:
+        results = [
+            e for e in results
+            if note.lower() in e.get("note", "").lower()
+        ]
+
+    return results
