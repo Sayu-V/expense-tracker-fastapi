@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from app.data.store import categories, expenses
+from app.storage.memory_db import categories, expenses
 
 router = APIRouter(prefix="/categories", tags=["Categories"])
 
