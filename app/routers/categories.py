@@ -1,8 +1,12 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from app.storage.memory_db import categories, expenses
+from app.core.security import verify_api_key
 
-router = APIRouter(prefix="/categories", tags=["Categories"])
-
+router = APIRouter(
+    prefix="/categories",
+    tags=["Categories"],
+    dependencies=[Depends(verify_api_key)]
+)
 
 @router.get("")
 def get_categories():
