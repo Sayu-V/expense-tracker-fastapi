@@ -1,13 +1,9 @@
 from fastapi import FastAPI
-
-from app.routers import expenses
-from app.routers import categories
-from app.routers import budget
-from app.routers import reports
-from app.routers import export
+from app.routers import expenses, categories, reports, budget, export, analytics
 
 app = FastAPI()
 
+app.include_router(analytics.router)
 app.include_router(expenses.router)
 app.include_router(categories.router)
 app.include_router(budget.router)
