@@ -18,7 +18,8 @@ def add_category(name: str):
 
     # prevent duplicate categories
     for c in categories:
-        if c["name"].lower() == name.lower():
+        #if c["name"].lower() == name.lower():
+        if c["name"].lower().strip() == name.lower().strip():    
             raise HTTPException(status_code=400, detail="Category already exists")
 
     new_id = max([c["id"] for c in categories], default=0) + 1
