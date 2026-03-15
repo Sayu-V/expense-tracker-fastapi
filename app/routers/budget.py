@@ -1,24 +1,26 @@
 from fastapi import APIRouter
-from app.storage.memory_db import budget, expenses
+#from app.storage.memory_db import budgets, expenses
+
+from ..data.store import budgets, expenses
 
 router = APIRouter(prefix="/budget", tags=["Budget"])
 
 @router.post("")
 def set_budget(limit: float):
-    budget["limit"] = limit
-    return budget
+    budgets["limit"] = limit
+    return budgets
 
 @router.get("")
 def get_budget():
-    return budget
+    return budgets
 
 @router.get("/status")
 def budget_status():
     spent = sum(e["amount"] for e in expenses)
-    remaining = budget["limit"] - spent
+    remaining = budgets["limit"] - spent
 
     return {
-        "budget": budget["limit"],
+        "budget": budgets["limit"],
         "spent": spent,
         "remaining": remaining
     }
