@@ -1,5 +1,7 @@
 from fastapi import APIRouter
-from app.storage.memory_db import budgets, expenses
+#from app.storage.memory_db import budgets, expenses
+
+from ..data.store import budgets, expenses
 
 router = APIRouter(prefix="/budget", tags=["Budget"])
 
