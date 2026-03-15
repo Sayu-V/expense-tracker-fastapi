@@ -94,6 +94,7 @@ def search_expenses(
     category: Optional[str] = None,
     note: Optional[str] = None
 ):
+
     results = expenses
 
     if category:
