@@ -38,7 +38,7 @@ def add_expense(expense: Expense):
 
     return data
 
-
+"""
 @router.put("/{expense_id}")
 def update_expense(expense_id: int, category: str, amount: float):
 
@@ -52,6 +52,26 @@ def update_expense(expense_id: int, category: str, amount: float):
         if e["id"] == expense_id:
             e["category"] = category
             e["amount"] = amount
+            return e
+
+    raise HTTPException(status_code=404, detail="Expense not found")
+"""
+@router.put("/{expense_id}")
+def update_expense(expense_id: int, expense: Expense):
+
+    data = expense.dict()
+
+    # validate category
+    category_obj = next((c for c in categories if c["name"] == data["category"]), None)
+
+    if not category_obj:
+        raise HTTPException(status_code=400, detail="Invalid category")
+
+    for e in expenses:
+        if e["id"] == expense_id:
+            e["category"] = data["category"]
+            e["amount"] = data["amount"]
+            e["note"] = data.get("note", "")
             return e
 
     raise HTTPException(status_code=404, detail="Expense not found")
