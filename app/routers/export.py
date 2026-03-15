@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from fastapi.responses import FileResponse
 import csv
-from app.data.store import expenses
+from app.storage.memory_db import expenses
 
 router = APIRouter(prefix="/export", tags=["Export"])
 
