@@ -1,3 +1,24 @@
+from fastapi import APIRouter, Depends
+from app.core.dependencies import get_analytics_service
+
+router = APIRouter(prefix="/analytics", tags=["Analytics"])
+
+
+@router.get("/top-categories")
+def top_categories(service = Depends(get_analytics_service)):
+    return service.get_top_categories()
+
+
+@router.get("/expense-trends")
+def expense_trends(service = Depends(get_analytics_service)):
+    return service.get_expense_trends()
+
+
+@router.get("/histogram")
+def expense_histogram(service = Depends(get_analytics_service)):
+    return service.get_expense_histogram()
+
+"""
 from fastapi import APIRouter
 from app.services.analytics_service import (
     get_top_categories,
@@ -22,6 +43,7 @@ def expense_trends():
 def expense_histogram():
     return get_expense_histogram()
     
+"""
 
 """
 from fastapi import APIRouter
