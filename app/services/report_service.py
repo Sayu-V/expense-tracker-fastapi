@@ -1,8 +1,13 @@
 from collections import defaultdict
 from app.storage.memory_db import expenses, budgets
 
+from app.core.exceptions import AppException
 
 def get_monthly_summary(month: str):
+
+    if not month:
+        raise AppException("Month parameter is required", 400)
+
     total = 0
 
     for e in expenses:
