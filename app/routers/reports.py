@@ -1,4 +1,30 @@
 from fastapi import APIRouter
+from app.services.report_service import (
+    get_monthly_summary,
+    get_monthly_category_breakdown,
+    get_budget_vs_expense
+)
+
+router = APIRouter(prefix="/reports", tags=["Reports"])
+
+
+@router.get("/monthly-summary")
+def monthly_summary(month: str):
+    return get_monthly_summary(month)
+
+
+@router.get("/monthly-category-breakdown")
+def monthly_category_breakdown(month: str):
+    return get_monthly_category_breakdown(month)
+
+
+@router.get("/budget-vs-expense")
+def budget_vs_expense(month: str):
+    return get_budget_vs_expense(month)
+
+
+"""
+from fastapi import APIRouter
 from collections import defaultdict
 from app.storage.memory_db import expenses, budgets
 
@@ -60,3 +86,4 @@ def budget_vs_expense(month: str):
         "spent": total_expense,
         "remaining": monthly_budget - total_expense
     }
+"""
