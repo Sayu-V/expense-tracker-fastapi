@@ -11,7 +11,7 @@ def top_categories():
     category_totals = defaultdict(float)
 
     for e in expenses:
-        category = e.get("category")
+        category = e.get("category", "Unknown")
         amount = e.get("amount", 0)
         category_totals[category] += amount
 
