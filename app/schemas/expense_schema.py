@@ -9,13 +9,14 @@ class Expense(BaseModel):
     date: str = str(date.today())
 """
 
+
 from pydantic import BaseModel
 from app.storage.memory_db import categories
 
 # 👇 THIS LINE CREATES DROPDOWN VALUES
 category_names = [c["name"] for c in categories]
 
-class ExpenseCreate(BaseModel):
+class Expense(BaseModel):
     category: str
     amount: float
     note: str | None = None
