@@ -24,6 +24,7 @@ def add_expense(expense: Expense):
     global next_expense_id
 
     data = expense.dict()
+    data["category"] = data["category"].value
 
     # validate category
     category = next((c for c in categories if c["name"] == data["category"]), None)
@@ -38,24 +39,7 @@ def add_expense(expense: Expense):
 
     return data
 
-"""
-@router.put("/{expense_id}")
-def update_expense(expense_id: int, category: str, amount: float):
 
-    # validate category
-    category_obj = next((c for c in categories if c["name"] == category), None)
-
-    if not category_obj:
-        raise HTTPException(status_code=400, detail="Invalid category")
-
-    for e in expenses:
-        if e["id"] == expense_id:
-            e["category"] = category
-            e["amount"] = amount
-            return e
-
-    raise HTTPException(status_code=404, detail="Expense not found")
-"""
 @router.put("/{expense_id}")
 def update_expense(expense_id: int, expense: Expense):
 
