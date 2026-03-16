@@ -1,10 +1,28 @@
 from typing import Optional
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from app.schemas.expense_schema import Expense
 from app.storage.memory_db import expenses, categories, next_expense_id
+from app.schemas.api_response import APIResponse, Pagination
+from app.services.expense_service import get_expenses
+
 
 router = APIRouter(prefix="/expenses", tags=["Expenses"])
 
+
+@router.get("/", response_model=APIResponse)
+def list_expenses(page: int = Query(1), limit: int = Query(10)):
+
+    result = get_expenses(page, limit)
+
+    return APIResponse(
+        status="success",
+        data=result["items"],
+        pagination=Pagination(
+            page=page,
+            limit=limit,
+            total=result["total"]
+        )
+    )
 
 @router.get("")
 def get_expenses():
