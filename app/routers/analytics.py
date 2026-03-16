@@ -20,9 +20,15 @@ def expense_trends(service = Depends(get_analytics_service)):
     return service.get_expense_trends()
 
 
-@router.get("/histogram")
+@router.get("/histogram", response_model=APIResponse)
 def expense_histogram(service = Depends(get_analytics_service)):
-    return service.get_expense_histogram()
+    data = service.get_expense_histogram()
+
+    return APIResponse(
+        status="success",
+        data=data
+    )
+
 
 """
 from fastapi import APIRouter
