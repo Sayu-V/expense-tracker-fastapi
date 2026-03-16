@@ -1,8 +1,12 @@
 from collections import defaultdict
 from app.storage.memory_db import expenses
-
+from app.core.exceptions import AppException
 
 def get_top_categories():
+
+    if not expenses:
+        raise AppException("No expenses available", 404)
+
     category_totals = defaultdict(float)
 
     for e in expenses:
