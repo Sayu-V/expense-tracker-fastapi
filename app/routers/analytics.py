@@ -1,4 +1,30 @@
 from fastapi import APIRouter
+from app.services.analytics_service import (
+    get_top_categories,
+    get_expense_trends,
+    get_expense_histogram
+)
+
+router = APIRouter(prefix="/analytics", tags=["Analytics"])
+
+
+@router.get("/top-categories")
+def top_categories():
+    return get_top_categories()
+
+
+@router.get("/expense-trends")
+def expense_trends():
+    return get_expense_trends()
+
+
+@router.get("/histogram")
+def expense_histogram():
+    return get_expense_histogram()
+    
+
+"""
+from fastapi import APIRouter
 from collections import defaultdict
 from app.storage.memory_db import expenses
 
@@ -55,3 +81,4 @@ def expense_histogram():
             buckets["1000+"] += 1
 
     return buckets
+"""
