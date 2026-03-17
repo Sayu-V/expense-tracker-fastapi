@@ -1,26 +1,35 @@
-#from ..data.store import budgets, expenses
+from app.storage.memory_db import budget
+from app.schemas.api_response import APIResponse
 
-from fastapi import APIRouter
-from app.storage.memory_db import budgets, expenses
 
-router = APIRouter(prefix="/budget", tags=["Budget"])
-
-@router.post("")
+@router.post("", response_model=APIResponse)
 def set_budget(limit: float):
-    budgets["limit"] = limit
-    return budgets
+    budget["limit"] = limit
+    budget["spent"] = 0
 
-@router.get("")
+    return APIResponse(
+        status="success",
+        data=budget
+    )
+
+
+@router.get("", response_model=APIResponse)
 def get_budget():
-    return budgets
+    return APIResponse(
+        status="success",
+        data=budget
+    )
 
-@router.get("/status")
+
+@router.get("/status", response_model=APIResponse)
 def budget_status():
-    spent = sum(e["amount"] for e in expenses)
-    remaining = budgets.get("limit", 0) - spent
+    remaining = budget["limit"] - budget["spent"]
 
-    return {
-        "budget": budgets.get("limit", 0),
-        "spent": spent,
-        "remaining": remaining
-    }
+    return APIResponse(
+        status="success",
+        data={
+            "limit": budget["limit"],
+            "spent": budget["spent"],
+            "remaining": remaining
+        }
+    )
