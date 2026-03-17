@@ -1,4 +1,4 @@
-from app.storage.memory_db import expenses
+from app.storage.memory_db import expenses, budget
 
 
 def get_expenses(page, limit, category=None, min_amount=None, max_amount=None):
@@ -47,6 +47,25 @@ def create_expense(expense, next_id, categories):
     expenses.append(data)
 
     return data, None
+
+
+def create_expense(expense, next_id, categories):
+    data = expense.dict()
+    data["category"] = data["category"].value
+
+    # validate category
+    category = next((c for c in categories if c["name"] == data["category"]), None)
+    if not category:
+        return None, "Invalid category"
+
+    data["id"] = next_id
+    expenses.append(data)
+
+    # ✅ UPDATE BUDGET HERE
+    budget["spent"] += data["amount"]
+
+    return data, None
+    
 
 
 def update_expense(expense_id: int, expense, categories):
