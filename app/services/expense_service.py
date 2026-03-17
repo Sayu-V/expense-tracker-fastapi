@@ -86,9 +86,12 @@ def update_expense(expense_id: int, expense, categories):
     return None, "Expense not found"
 
 
-def delete_expense(expense_id: int):
+def delete_expense(expense_id):
+
     for e in expenses:
         if e["id"] == expense_id:
+            budget["spent"] -= e["amount"]  # ✅ important
             expenses.remove(e)
             return True
+
     return False
