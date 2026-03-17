@@ -1,5 +1,5 @@
 from collections import defaultdict
-from app.storage.memory_db import expenses, budgets
+from app.storage.memory_db import expenses, budget
 
 from app.core.exceptions import AppException
 
@@ -41,7 +41,7 @@ def get_budget_vs_expense(month: str):
         if e.get("date", "").startswith(month):
             total_expense += e.get("amount", 0)
 
-    monthly_budget = budgets.get(month, 0)
+    monthly_budget = budget.get(month, 0)
 
     return {
         "month": month,
