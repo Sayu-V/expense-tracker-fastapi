@@ -4,11 +4,12 @@ from app.schemas.expense_schema import Expense
 from app.storage.memory_db import expenses, categories, next_expense_id
 from app.schemas.api_response import APIResponse, Pagination
 from app.services.expense_service import get_expenses
+from app.services import expense_service
 
 router = APIRouter(prefix="/expenses", tags=["Expenses"])
 
 
-# ✅ UPDATED LIST ENDPOINT (only this changed)
+# ✅ LIST
 @router.get("/", response_model=APIResponse)
 def list_expenses(
     page: int = Query(1, ge=1),
@@ -36,87 +37,98 @@ def list_expenses(
     )
 
 
-# ✅ KEEP EVERYTHING BELOW SAME AS OLD
-
-@router.get("/{expense_id}")
+# ✅ GET BY ID
+@router.get("/{expense_id}", response_model=APIResponse)
 def get_expense(expense_id: int):
     for e in expenses:
         if e["id"] == expense_id:
-            return e
+            return APIResponse(status="success", data=e)
+
     raise HTTPException(status_code=404, detail="Expense not found")
 
 
-@router.post("")
+# ✅ CREATE
+@router.post("", response_model=APIResponse)
 def add_expense(expense: Expense):
     global next_expense_id
 
-    data = expense.dict()
-    data["category"] = data["category"].value
+    data, error = expense_service.create_expense(expense, next_expense_id, categories)
 
-    category_obj = next((c for c in categories if c["name"] == data["category"]), None)
+    if error:
+        raise HTTPException(status_code=400, detail=error)
 
-    if not category_obj:
-        raise HTTPException(status_code=400, detail="Invalid category")
-
-    data["id"] = next_expense_id
     next_expense_id += 1
 
-    expenses.append(data)
-
-    return data
+    return APIResponse(status="success", data=data)
 
 
-@router.put("/{expense_id}")
+# ✅ UPDATE
+@router.put("/{expense_id}", response_model=APIResponse)
 def update_expense(expense_id: int, expense: Expense):
-    data = expense.dict()
 
-    category_obj = next((c for c in categories if c["name"] == data["category"]), None)
+    data, error = expense_service.update_expense(expense_id, expense, categories)
 
-    if not category_obj:
-        raise HTTPException(status_code=400, detail="Invalid category")
+    if error == "Invalid category":
+        raise HTTPException(status_code=400, detail=error)
 
-    for e in expenses:
-        if e["id"] == expense_id:
-            e["category"] = data["category"]
-            e["amount"] = data["amount"]
-            e["note"] = data.get("note", "")
-            return e
+    if error == "Expense not found":
+        raise HTTPException(status_code=404, detail=error)
 
-    raise HTTPException(status_code=404, detail="Expense not found")
+    return APIResponse(status="success", data=data)
 
 
-@router.delete("/{expense_id}")
+# ✅ DELETE ONE
+@router.delete("/{expense_id}", response_model=APIResponse)
 def delete_expense(expense_id: int):
-    for e in expenses:
-        if e["id"] == expense_id:
-            expenses.remove(e)
-            return {"message": "Expense deleted"}
 
-    raise HTTPException(status_code=404, detail="Expense not found")
+    success = expense_service.delete_expense(expense_id)
+
+    if not success:
+        raise HTTPException(status_code=404, detail="Expense not found")
+
+    return APIResponse(
+        status="success",
+        data={"message": "Expense deleted"}
+    )
 
 
-@router.delete("")
+# ✅ DELETE ALL
+@router.delete("", response_model=APIResponse)
 def delete_all():
     expenses.clear()
-    return {"message": "All expenses removed"}
+
+    return APIResponse(
+        status="success",
+        data={"message": "All expenses removed"}
+    )
 
 
-@router.get("/filter/category")
+# ✅ FILTER CATEGORY
+@router.get("/filter/category", response_model=APIResponse)
 def filter_category(category: str):
-    return [e for e in expenses if e["category"] == category]
+    data = [e for e in expenses if e["category"] == category]
+
+    return APIResponse(status="success", data=data)
 
 
-@router.get("/filter/date")
+# ✅ FILTER DATE (FIXED)
+@router.get("/filter/date", response_model=APIResponse)
 def filter_date(expense_date: str):
-    return [e for e in expenses if e.get("date") == expense_date]
+    data = [e for e in expenses if e.get("date") == expense_date]
+
+    return APIResponse(status="success", data=data)
 
 
-@router.get("/filter/amount")
+# ✅ FILTER AMOUNT (FIXED)
+@router.get("/filter/amount", response_model=APIResponse)
 def filter_amount(min: float, max: float):
-    return [e for e in expenses if min <= e["amount"] <= max]
+    data = [e for e in expenses if min <= e["amount"] <= max]
+
+    return APIResponse(status="success", data=data)
 
 
-@router.get("/search")
+# ✅ SEARCH (FIXED)
+@router.get("/search", response_model=APIResponse)
 def search_expenses(
     category: Optional[str] = None,
     note: Optional[str] = None
@@ -129,4 +141,4 @@ def search_expenses(
     if note:
         results = [e for e in results if note.lower() in e.get("note", "").lower()]
 
-    return results
+    return APIResponse(status="success", data=results)
