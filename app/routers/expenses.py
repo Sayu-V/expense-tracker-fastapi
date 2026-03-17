@@ -24,10 +24,6 @@ def list_expenses(page: int = Query(1), limit: int = Query(10)):
         )
     )
 
-@router.get("")
-def get_expenses():
-    return expenses
-
 
 @router.get("/{expense_id}")
 def get_expense(expense_id: int):
