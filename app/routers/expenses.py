@@ -8,6 +8,25 @@ from app.services.expense_service import get_expenses
 
 router = APIRouter(prefix="/expenses", tags=["Expenses"])
 
+router = APIRouter()
+
+@router.get("/expenses")
+def list_expenses(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(10, ge=1, le=100),
+    category: Optional[str] = None,
+    min_amount: Optional[float] = Query(None, ge=0),
+    max_amount: Optional[float] = Query(None, ge=0),
+):
+    
+    if min_amount and max_amount and min_amount > max_amount:
+        raise HTTPException(
+            status_code=400,
+            detail="min_amount cannot be greater than max_amount"
+        )
+
+    return get_expenses(skip, limit, category, min_amount, max_amount)
+    
 
 @router.get("/", response_model=APIResponse)
 def list_expenses(page: int = Query(1), limit: int = Query(10)):
