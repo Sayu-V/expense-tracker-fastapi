@@ -6,6 +6,11 @@ categories = [
 
 expenses = []
 
-budgets = {}
+# ✅ FIXED
+budget = {
+    "limit": 0,
+    "spent": 0
+}
 
 next_expense_id = 1
+
