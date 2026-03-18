@@ -108,7 +108,15 @@ Temporary data persistence
 Simulates database behavior
 
 ## 🧾 Data Models
-Expense Model
+
+## Expense Model
+
+| Field  | Right columns |
+| ------------- |:-------------:|
+| left foo      | right foo     |
+| left bar      | right bar     |
+| left baz      | right baz     |
+
 Field	Type	Description
 id	int	Unique identifier
 category	str	Expense category
