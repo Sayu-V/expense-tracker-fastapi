@@ -7,7 +7,7 @@ from fastapi import HTTPException
 from typing import Optional
 
 # Import in-memory DB
-from app.db import expenses, next_expense_id, categories
+from app.storage.memory_db import expenses, budget, categories, next_expense_id
 
 
 # -------------------------------
