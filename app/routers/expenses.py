@@ -111,12 +111,15 @@ def filter_category(category: str):
     return APIResponse(status="success", data=data)
 
 
+
+
 # ✅ FILTER DATE (FIXED)
 @router.get("/filter/date", response_model=APIResponse)
 def filter_date(expense_date: str):
     data = [e for e in expenses if e.get("date") == expense_date]
 
     return APIResponse(status="success", data=data)
+
 
 
 # ✅ FILTER AMOUNT (FIXED)
