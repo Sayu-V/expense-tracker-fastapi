@@ -1,200 +1,170 @@
-\# Expense Tracker API (FastAPI)
+# 🚀 Expense Tracker API (FastAPI)
 
+A scalable backend REST API for managing personal finance data such as expenses, categories, budgets, analytics, and reports.
 
-
-A REST API backend for tracking personal expenses, built with \*\*FastAPI\*\*, \*\*Python\*\*, and \*\*Docker\*\*.
-
-
-
-This project demonstrates how to design and implement a scalable backend API with proper documentation, version control, and architecture planning.
-
-
+Built using **FastAPI**, **Python**, and **Docker**, this project demonstrates a **modular, service-based backend architecture** used in real-world applications.
 
 ---
 
+## ✨ Features
 
-
-\# Features
-
-
-
-\* Expense CRUD operations
-
-\* Category management
-
-\* Expense filtering
-
-\* Budget tracking
-
-\* Expense analytics
-
-\* CSV export
-
-\* REST API design
-
-\* Swagger API documentation
-
-
+- Expense CRUD operations
+- Category management
+- Budget tracking
+- Expense filtering & search
+- Analytics & reports
+- CSV export functionality
+- Standardized API responses
+- Modular router-based architecture
+- Swagger API documentation
 
 ---
 
+## 🏗️ Architecture Highlights
 
+- Modular routing using FastAPI `APIRouter`
+- Service layer for business logic separation
+- Centralized core utilities (dependencies, exceptions, security)
+- Schema-based request/response validation
+- In-memory storage (replaceable with DB)
 
-\# Tech Stack
-
-
-
-| Component         | Technology        |
-
-| ----------------- | ----------------- |
-
-| Language          | Python            |
-
-| API Framework     | FastAPI           |
-
-| Containerization  | Docker            |
-
-| API Documentation | Swagger / OpenAPI |
-
-| Future Database   | PostgreSQL        |
-
-| Future ORM        | SQLModel          |
-
-
+📌 This follows modern FastAPI best practices like:
+- Thin routers + service layer logic  
+- Modular feature-based design  
+- Clean separation of concerns :contentReference[oaicite:0]{index=0}  
 
 ---
 
+## 🛠️ Tech Stack
 
-
-\# Architecture
-
-
-
-Client
-
-↓
-
-FastAPI Backend
-
-↓
-
-Python Data Storage (current)
-
-↓
-
-PostgreSQL (future)
-
-
+| Component        | Technology        |
+|------------------|------------------|
+| Language         | Python           |
+| API Framework    | FastAPI          |
+| Validation       | Pydantic         |
+| Architecture     | Layered + Modular|
+| Containerization | Docker           |
+| API Docs         | Swagger / OpenAPI|
+| Storage (Current)| In-memory        |
+| Future DB        | PostgreSQL       |
 
 ---
 
-
-
-\# Running the Project
-
-
-
-\## Start the application
-
-
-
-docker compose up --build
-
-
-
-\## Access API documentation
-
-
-
-http://localhost:8000/docs
-
-
-
----
-
-
-
-\# Project Structure
-
-
-
+## 📂 Project Structure
 app/
-
-└── main.py
-
-
+├── core/ # Shared utilities (security, exceptions, dependencies)
+├── routers/ # API endpoints (feature-based)
+├── services/ # Business logic layer
+├── schemas/ # Request/response models
+├── storage/ # In-memory database
+└── main.py # Entry point
 
 docs/
-
+├── ARCHITECTURE.md
 ├── HLD.md
-
 ├── LLD.md
-
 └── tech-stack.md
 
-
-
 Dockerfile
-
 docker-compose.yml
-
 requirements.txt
 
 
+---
+
+## 🔄 Request Flow
+
+Client → Router → Service → Storage → APIResponse → Client
 
 ---
 
+## ▶️ Running the Project
 
+### 1. Start using Docker
 
-\# Future Improvements
+```bash
+docker compose up --build
 
+2. Access API Docs
 
+Swagger UI:
 
-\* PostgreSQL database integration
+http://localhost:8000/docs
+📊 API Overview
 
-\* SQLModel ORM
+~24 REST endpoints
 
-\* Authentication (JWT)
+Organized by modules:
 
-\* User accounts
+expenses
 
-\* Deployment to cloud
+categories
 
+budget
 
+analytics
 
-See \*\*PROJECT\_ROADMAP.md\*\* for the full plan.
+reports
 
+export
 
+🧪 Testing
 
----
-
-
-
-\# API Documentation
-
-
-
-FastAPI automatically generates API documentation:
-
-
+You can test APIs using:
 
 Swagger UI
 
+Postman
 
+Example:
+
+GET /expenses
+POST /expenses
+GET /analytics
+🚧 Current Limitations
+
+No persistent database (in-memory only)
+
+No authentication system (JWT pending)
+
+No caching layer
+
+Limited validation rules
+
+🔮 Future Improvements
+
+PostgreSQL integration
+
+Repository layer
+
+JWT Authentication
+
+User management
+
+Redis caching
+
+Cloud deployment (AWS/GCP)
+
+CI/CD pipeline
+
+See PROJECT_ROADMAP.md for details.
+
+📘 API Documentation
+
+FastAPI automatically generates interactive docs:
+
+Swagger UI:
 
 http://localhost:8000/docs
+🤝 Contributing
 
+Contributions are welcome!
 
+Please check:
 
----
-
-
-
-\# License
-
-
+CONTRIBUTING.md
+📜 License
 
 MIT License
 
-
-
+---
