@@ -117,49 +117,41 @@ Example:
 GET /expenses
 POST /expenses
 GET /analytics
-🚧 Current Limitations
 
-No persistent database (in-memory only)
+## 🚧 Current Limitations
+- No persistent database (in-memory only)
+- No authentication system (JWT pending)
+- No caching layer
+- Limited validation rules
 
-No authentication system (JWT pending)
-
-No caching layer
-
-Limited validation rules
-
-🔮 Future Improvements
-
-PostgreSQL integration
-
-Repository layer
-
-JWT Authentication
-
-User management
-
-Redis caching
-
-Cloud deployment (AWS/GCP)
-
-CI/CD pipeline
+## 🔮 Future Improvements
+- PostgreSQL integration
+- Repository layer
+- JWT Authentication
+- User management
+- Redis caching
+- Cloud deployment (AWS/GCP)
+- CI/CD pipeline
 
 See PROJECT_ROADMAP.md for details.
 
-📘 API Documentation
+## 📘 API Documentation
 
 FastAPI automatically generates interactive docs:
 
 Swagger UI:
 
 http://localhost:8000/docs
-🤝 Contributing
+
+## 🤝 Contributing
 
 Contributions are welcome!
 
 Please check:
 
 CONTRIBUTING.md
-📜 License
+
+## 📜 License
 
 MIT License
 
