@@ -85,12 +85,13 @@ Client → Router → Service → Storage → APIResponse → Client
 ```bash
 docker compose up --build
 
-2. Access API Docs
+## 2. Access API Docs
 
 Swagger UI:
 
 http://localhost:8000/docs
-📊 API Overview
+
+## 📊 API Overview
 
 ~24 REST endpoints
 
