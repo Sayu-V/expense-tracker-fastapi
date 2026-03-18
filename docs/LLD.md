@@ -113,10 +113,11 @@ Simulates database behavior
 
 | Field         |   Type         | Description  | 
 | ------------- |:-------------:|  ------------- |
-| left foo      | right foo     |
-| left bar      | right bar     |
-| left baz      | right baz     |
-
+| id     | int    |  Unique identifier     |
+| left bar      | right bar     |  left foo      |
+| left baz      | right baz     |  left foo      |
+| left bar      | right bar     |  left foo      |
+| left baz      | right baz     |  left foo      |
 
 
 Field	Type	Description
