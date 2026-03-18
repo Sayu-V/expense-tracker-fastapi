@@ -1,20 +1,21 @@
-from pydantic import BaseModel
-from enum import Enum
-from app.storage.memory_db import categories
+"""
+Expense Schema (Request + Response Models)
 
+IMPORTANT:
+- Category is now dynamic (NOT ENUM)
+- Validation happens in service layer
+"""
 
-# build enum
-CategoryEnum = Enum(
-    "CategoryEnum",
-    {c["name"]: c["name"] for c in categories},
-    type=str
-)
+from pydantic import BaseModel, Field
+from typing import Optional
+from datetime import datetime
 
 
 class Expense(BaseModel):
-    category: CategoryEnum
-    amount: float
-    note: str | None = None
-
-    class Config:
-        use_enum_values = True
+    category: str = Field(..., description="Category name (dynamic)")
+    amount: float = Field(..., gt=0, description="Expense amount")
+    note: Optional[str] = Field(None, description="Optional note")
+    expense_date: Optional[str] = Field(
+        default_factory=lambda: datetime.now().strftime("%Y-%m-%d"),
+        description="Date of expense"
+    )
