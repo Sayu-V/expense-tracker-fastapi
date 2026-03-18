@@ -36,23 +36,26 @@ def get_expense_by_id(expense_id: int):
 
 
 
-def create_expense(expense, next_id, categories):
-    data = expense.dict()
-    data["category"] = data["category"].value
-
+def create_expense(expense, expense_id, categories):
     # validate category
-    category = next((c for c in categories if c["name"] == data["category"]), None)
-    if not category:
+    if expense.category not in [c["name"] for c in categories]:
         return None, "Invalid category"
 
-    data["id"] = next_id
-    expenses.append(data)
+    new_expense = {
+        "id": expense_id,
+        "category": expense.category,
+        "amount": expense.amount,
+        "note": expense.note,
+    }
 
-    # ✅ UPDATE BUDGET HERE
-    budget["spent"] += data["amount"]
+    # ✅ THIS WAS MISSING
+    expenses.append(new_expense)
 
-    return data, None
-    
+    # ✅ update budget
+    budget["spent"] += expense.amount
+
+    return new_expense, None
+
 
 
 def update_expense(expense_id: int, expense, categories):
