@@ -96,13 +96,12 @@ http://localhost:8000/docs
 
 1. ~24 REST endpoints
 2. Organized by modules:
-   
-   1.expenses
-   2.categories
-   3.budget
-   4.analytics
-   5.reports
-   6.export
+- expenses
+- categories
+- budget
+- analytics
+- reports
+- export
 
 
 ## 🧪 Testing
