@@ -36,4 +36,4 @@ next_expense_id = 1
 # BUDGET STORAGE
 # -------------------------------
 
-budgets = {}
+budget = {}
