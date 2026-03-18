@@ -164,13 +164,13 @@ spent	float	Total expenses spent
 - GET /expenses/search
 
 ## 🔄 Request Handling Flow
-1.Client sends HTTP request
-2.Router receives request
-3.Input validated via Pydantic schema
-4.Service layer processes logic
-5.Data retrieved/updated in memory DB
-6.Response formatted using APIResponse
-7.JSON response returned to client
+1. Client sends HTTP request
+2. Router receives request
+3. Input validated via Pydantic schema
+4. Service layer processes logic
+5. Data retrieved/updated in memory DB
+6. Response formatted using APIResponse
+7. JSON response returned to client
 
 ## ✅ Validation Strategy
 
@@ -197,7 +197,5 @@ Ensures:
 - PostgreSQL integration
 - Repository layer addition
 - JWT authentication
-
-Advanced filtering & pagination
-
-Async database operations
+- Advanced filtering & pagination
+- Async database operations
