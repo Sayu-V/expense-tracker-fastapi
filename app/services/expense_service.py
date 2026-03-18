@@ -1,4 +1,5 @@
 from app.storage.memory_db import expenses, budget
+from app.storage.memory_db import categories
 
 def get_expenses(page, limit, category=None, min_amount=None, max_amount=None):
     from app.storage.memory_db import expenses
@@ -56,6 +57,12 @@ def create_expense(expense, expense_id, categories):
 
     return new_expense, None
 
+
+def validate_category(category_name: str):
+    for cat in categories:
+        if cat["name"].lower() == category_name.lower():
+            return True
+    return False
 
 
 def update_expense(expense_id: int, expense, categories):
