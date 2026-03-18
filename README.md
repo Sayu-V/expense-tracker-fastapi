@@ -95,8 +95,8 @@ http://localhost:8000/docs
 ## 📊 API Overview
 
 1. ~24 REST endpoints
-
 2. Organized by modules:
+   
    1.expenses
    2.categories
    3.budget
