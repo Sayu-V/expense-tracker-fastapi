@@ -84,6 +84,7 @@ Client → Router → Service → Storage → APIResponse → Client
 
 ```bash
 docker compose up --build
+```
 
 ## 2. Access API Docs
 
@@ -93,23 +94,18 @@ http://localhost:8000/docs
 
 ## 📊 API Overview
 
-~24 REST endpoints
+1. ~24 REST endpoints
 
-Organized by modules:
+2. Organized by modules:
+   1.expenses
+   2.categories
+   3.budget
+   4.analytics
+   5.reports
+   6.export
 
-expenses
 
-categories
-
-budget
-
-analytics
-
-reports
-
-export
-
-🧪 Testing
+## 🧪 Testing
 
 You can test APIs using:
 
