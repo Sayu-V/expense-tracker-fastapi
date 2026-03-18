@@ -1,140 +1,143 @@
 """
-Expense Service Layer
-
-Responsibilities:
-- Business logic
-- Validation (category, amounts, etc.)
-- Data manipulation (create, update, delete)
+Expense Service
+Handles all business logic for expenses
 """
 
-from app.storage.memory_db import expenses, budget, categories
+from fastapi import HTTPException
+from typing import Optional
+
+# Import in-memory DB
+from app.db import expenses, next_expense_id, categories
 
 
 # -------------------------------
-# CATEGORY VALIDATION
+# HELPER FUNCTIONS
 # -------------------------------
 
-def validate_category(category_name: str) -> bool:
-    """
-    Check if category exists in DB (case-insensitive)
-    """
+def category_exists(category_name: str) -> bool:
+    """Check if category exists in dynamic category list"""
+    return any(cat["name"].lower() == category_name.lower() for cat in categories)
+
+
+def get_category_name(category_name: str) -> str:
+    """Return properly formatted category name"""
     for cat in categories:
         if cat["name"].lower() == category_name.lower():
-            return True
-    return False
+            return cat["name"]
+    return None
+
+
+# -------------------------------
+# ADD EXPENSE
+# -------------------------------
+
+def add_expense(expense):
+    global next_expense_id
+
+    # Validate category
+    if not category_exists(expense.category):
+        raise HTTPException(status_code=400, detail="Invalid category")
+
+    # Normalize category name
+    category_name = get_category_name(expense.category)
+
+    new_expense = {
+        "id": next_expense_id,
+        "category": category_name,
+        "amount": expense.amount,
+        "note": expense.note,
+        "expense_date": expense.expense_date
+    }
+
+    expenses.append(new_expense)
+    next_expense_id += 1
+
+    return new_expense
 
 
 # -------------------------------
 # GET ALL EXPENSES (WITH FILTERS)
 # -------------------------------
 
-def get_expenses(page, limit, category=None, min_amount=None, max_amount=None):
-    data = expenses
+def list_expenses(page: int = 1, limit: int = 10,
+                  category: Optional[str] = None,
+                  min_amount: Optional[float] = None,
+                  max_amount: Optional[float] = None):
 
-    # filter by category (case-insensitive)
+    filtered = expenses
+
     if category:
-        data = [e for e in data if e["category"].lower() == category.lower()]
+        filtered = [e for e in filtered if e["category"].lower() == category.lower()]
 
-    # filter by min amount
     if min_amount is not None:
-        data = [e for e in data if e["amount"] >= min_amount]
+        filtered = [e for e in filtered if e["amount"] >= min_amount]
 
-    # filter by max amount
     if max_amount is not None:
-        data = [e for e in data if e["amount"] <= max_amount]
+        filtered = [e for e in filtered if e["amount"] <= max_amount]
 
-    total = len(data)
-
-    # pagination
+    # Pagination
     start = (page - 1) * limit
     end = start + limit
 
     return {
-        "items": data[start:end],
-        "total": total
+        "data": filtered[start:end],
+        "pagination": {
+            "page": page,
+            "limit": limit,
+            "total": len(filtered)
+        }
     }
 
 
 # -------------------------------
-# GET EXPENSE BY ID
+# GET SINGLE EXPENSE
 # -------------------------------
 
-def get_expense_by_id(expense_id: int):
+def get_expense(expense_id: int):
     for e in expenses:
         if e["id"] == expense_id:
             return e
-    return None
 
-
-# -------------------------------
-# CREATE EXPENSE
-# -------------------------------
-
-def create_expense(expense, expense_id):
-    """
-    Create a new expense
-    """
-
-    # ✅ Validate category
-    if not validate_category(expense.category):
-        return None, "Invalid category. Please create category first."
-
-    # ✅ Create expense object
-    new_expense = {
-        "id": expense_id,
-        "category": expense.category,
-        "amount": expense.amount,
-        "note": expense.note,
-        "expense_date": expense.expense_date
-    }
-
-    # ✅ Save expense
-    expenses.append(new_expense)
-
-    # ✅ Safe budget update
-    if "spent" not in budget:
-        budget["spent"] = 0
-
-    budget["spent"] += expense.amount
-
-    return new_expense, None
+    raise HTTPException(status_code=404, detail="Expense not found")
 
 
 # -------------------------------
 # UPDATE EXPENSE
 # -------------------------------
 
-def update_expense(expense_id: int, expense):
-    data = expense.dict()
-
-    # ✅ Validate category
-    if not validate_category(data["category"]):
-        return None, "Invalid category"
-
+def update_expense(expense_id: int, updated_expense):
     for e in expenses:
         if e["id"] == expense_id:
-            e["category"] = data["category"]
-            e["amount"] = data["amount"]
-            e["note"] = data.get("note", "")
-            e["expense_date"] = data.get("expense_date", e.get("expense_date"))
-            return e, None
 
-    return None, "Expense not found"
+            if not category_exists(updated_expense.category):
+                raise HTTPException(status_code=400, detail="Invalid category")
+
+            e["category"] = get_category_name(updated_expense.category)
+            e["amount"] = updated_expense.amount
+            e["note"] = updated_expense.note
+            e["expense_date"] = updated_expense.expense_date
+
+            return e
+
+    raise HTTPException(status_code=404, detail="Expense not found")
 
 
 # -------------------------------
 # DELETE EXPENSE
 # -------------------------------
 
-def delete_expense(expense_id):
-    for e in expenses:
+def delete_expense(expense_id: int):
+    for i, e in enumerate(expenses):
         if e["id"] == expense_id:
+            return expenses.pop(i)
 
-            # ✅ Safe budget update
-            if "spent" in budget:
-                budget["spent"] -= e["amount"]
+    raise HTTPException(status_code=404, detail="Expense not found")
 
-            expenses.remove(e)
-            return True
 
-    return False
+# -------------------------------
+# DELETE ALL
+# -------------------------------
+
+def delete_all_expenses():
+    expenses.clear()
+    return {"message": "All expenses deleted"}
