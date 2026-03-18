@@ -42,6 +42,9 @@ def create_expense(expense, expense_id, categories):
     if expense.category not in [c["name"] for c in categories]:
         return None, "Invalid category"
 
+    if not validate_category(expense.category):
+    raise ValueError("Invalid category. Please create category first.")
+
     new_expense = {
         "id": expense_id,
         "category": expense.category,
