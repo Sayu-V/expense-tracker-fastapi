@@ -114,28 +114,25 @@ Simulates database behavior
 | Field         |   Type         | Description  | 
 | ------------- |:-------------:|  ------------- |
 | id     | int    |  Unique identifier     |
-| left bar      | right bar     |  left foo      |
-| left baz      | right baz     |  left foo      |
-| left bar      | right bar     |  left foo      |
-| left baz      | right baz     |  left foo      |
+| category      | str     |  Expense category     |
+| amount     | float     |  Expense amount      |
+| note      | str     |   Optional description      |
+| date      | str     |  Expense date     |
 
-
-Field	Type	Description
-id	int	Unique identifier
-category	str	Expense category
-amount	float	Expense amount
-note	str	Optional description
-date	str	Expense date
 
 ## Category Model
-Field	Type	Description
-id	int	Unique identifier
-name	str	Category name
+
+| Field         |   Type         | Description  | 
+| ------------- |:-------------:|  ------------- |
+| id     | int    |  Unique identifier     |
+| name     | str     |  Category name     |
 
 ## Budget Model
-Field	Type	Description
-limit	float	Budget limit
-spent	float	Total expenses spent
+| Field         |   Type         | Description  | 
+| ------------- |:-------------:|  ------------- |
+| limit    | float    |  Budget limit     |
+| spent      | float    |  Total expenses spent     |
+	
 
 ## 🔌 API Endpoints
 ## 🧾 Expenses
