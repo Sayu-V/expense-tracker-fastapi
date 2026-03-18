@@ -111,11 +111,13 @@ Simulates database behavior
 
 ## Expense Model
 
-| Field  | Right columns |
-| ------------- |:-------------:|
+| Field         |   Type         | Description  | 
+| ------------- |:-------------:|  ------------- |
 | left foo      | right foo     |
 | left bar      | right bar     |
 | left baz      | right baz     |
+
+
 
 Field	Type	Description
 id	int	Unique identifier
